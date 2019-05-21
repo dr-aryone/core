@@ -158,7 +158,7 @@ Feature: Autocompletion of share-with names
     And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
-  Scenario: autocompletion of a pattern where the name of existing users contain the pattern somewhere in the middle
+  Scenario: autocompletion of a pattern where the name of existing users contains the pattern somewhere in the middle
     Given user "user1" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -168,7 +168,7 @@ Feature: Autocompletion of share-with names
     And user "Four" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
-  Scenario: autocompletion of a pattern where the name of existing users contain the pattern at the end
+  Scenario: autocompletion of a pattern where the name of existing users contains the pattern at the end
     Given user "usergrp" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -176,6 +176,36 @@ Feature: Autocompletion of share-with names
     Then all users and groups that contain the string "r3" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "User One" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "anc" in the share-with-field
+    Then all users and groups that contain the string "finance" in their name should be listed in the autocomplete list on the webUI
+    But group "other" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern at the end
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "ce2" in the share-with-field
+    Then all users and groups that contain the string "finance2" in their name should be listed in the autocomplete list on the webUI
+    But group "finance1" should not be listed in the autocomplete list on the webUI
+    But group "finance3" should not be listed in the autocomplete list on the webUI
+    But group "users-finance" should not be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle but group medial search is disabled
+    Given user "user1" has logged in using the webUI
+    And the administrator has added system config key "groups.enable_medial_search" with value "false" and type "boolean"
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "anc" in the share-with-field
+    Then all users and groups that contain the string "finance" in their name should be listed in the autocomplete list on the webUI
+    But group "other" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: allow user to disable autocomplete in sharing dialog

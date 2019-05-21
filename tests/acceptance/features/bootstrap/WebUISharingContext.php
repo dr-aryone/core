@@ -961,6 +961,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			throw new Exception("$username found in autocomplete list but not expected");
 		}
 	}
+	/**
+	 * @Then group :groupname should not be listed in the autocomplete list on the webUI
+	 *
+	 * @param string $groupname
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function groupShouldNotBeListedInTheAutocompleteListOnTheWebui($groupname) {
+		$names = $this->sharingDialog->getAutocompleteItemsList();
+		$groupname = $this->sharingDialog->groupStringsToMatchAutoComplete($groupname);
+		if (\in_array($groupname, $names)) {
+			throw new Exception("$groupname found in autocomplete list but not expected");
+		}
+	}
 
 	/**
 	 * @Then a tooltip with the text :text should be shown near the share-with-field on the webUI
