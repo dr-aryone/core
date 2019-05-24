@@ -178,13 +178,22 @@ Feature: Autocompletion of share-with names
     And user "User One" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
-  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle
+  Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle
     Given user "ivan" has been created with default attributes
     And user "user1" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "iv" in the share-with-field
     Then all users and groups that contain the string "iv" in their name should be listed in the autocomplete list on the webUI
+
+  @skipOnLDAP
+  Scenario: autocompletion of a pattern where the name of existing group contains the pattern somewhere in the middle
+    Given user "user1" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user has opened the share dialog for folder "simple-folder"
+    When the user types "anc" in the share-with-field
+    Then all users and groups that contain the string "finance" in their name should be listed in the autocomplete list on the webUI
+    But group "other" should not be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the end
@@ -214,7 +223,7 @@ Feature: Autocompletion of share-with names
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "finn" in the share-with-field
-    Then all users and groups that contain the string "usersmith" in their name should be listed in the autocomplete list on the webUI
+    Then only "John Finn Smith" should be listed in the autocomplete list on the webUI
 
   @skipOnLDAP
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere at the end
